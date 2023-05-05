@@ -47,7 +47,7 @@ export class App extends React.Component {
         <h2>Contacts</h2>
         <Filter value={this.state.filter} onChange={this.handleInputChange} />
         <ContactList
-          getContacts={this.getVisibleContacts}
+          getContacts={this.getVisibleContacts()}
           onDeleteContact={this.handleDeleteContact}
         />
       </div>

@@ -4,7 +4,7 @@ import { formatContact } from 'utils';
 export const ContactList = ({ getContacts, onDeleteContact }) => {
   return (
     <ul>
-      {getContacts().map(contact => {
+      {getContacts.map(contact => {
         return (
           <li key={contact.id}>
             <span>{contact.name}: </span>
@@ -20,6 +20,12 @@ export const ContactList = ({ getContacts, onDeleteContact }) => {
 };
 
 ContactList.propTypes = {
-  getContacts: PropTypes.func.isRequired,
+  getContacts: PropTypes.arrayOf(
+    PropTypes.exact({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
   onDeleteContact: PropTypes.func.isRequired,
 };
