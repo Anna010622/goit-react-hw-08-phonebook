@@ -9,10 +9,8 @@ export const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    console.log('рендер');
     const savedContacts = JSON.parse(localStorage.getItem('contacts'));
     if (savedContacts) {
-      console.log('рендер в іфі');
       setContacts(savedContacts);
     }
   }, []);
