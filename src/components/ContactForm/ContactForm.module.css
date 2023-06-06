@@ -1,9 +1,0 @@
-.ContactForm {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.ContactForm__Btn {
-  width: 90px;
-}

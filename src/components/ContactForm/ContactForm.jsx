@@ -1,26 +1,47 @@
-import { useState } from 'react';
-import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
 
-export const ContactForm = () => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
+const schema = yup
+  .object({
+    name: yup
+      .string()
+      .required('Name is required')
+      .min(3, 'Name must be no less than 3 characters long')
+      .matches(
+        /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
+        'Name may contain only letters, apostrophe, dash and spaces'
+      ),
+    number: yup
+      .string()
+      .min(7, 'Number phone must be no less than 7 characters long')
+      .max(17, 'Number phone must be no more than 17 characters long')
+      .required('Number is required')
+      .matches(
+        /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
+        'Phone number must be digits and can contain spaces, dashes, parentheses and can start with +'
+      ),
+  })
+  .required();
+
+export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts.contactsList);
 
-  const handleInputChange = event => {
-    if (event.currentTarget.name === 'name') {
-      setName(event.currentTarget.value);
-    } else if (event.currentTarget.name === 'number') {
-      setNumber(event.currentTarget.value);
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'onTouched',
+    resolver: yupResolver(schema),
+  });
 
-  const handleFormSubmit = event => {
-    event.preventDefault();
-
+  const onSubmit = ({ name, number }) => {
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -28,45 +49,26 @@ export const ContactForm = () => {
     ) {
       return alert(`${name} is already in contacts`);
     }
+
     dispatch(addContact(name, number));
-    resetForm();
-  };
-  const resetForm = () => {
-    setName('');
-    setNumber('');
+    reset();
   };
 
   return (
-    <form className={css.ContactForm} onSubmit={handleFormSubmit}>
-      <label>
-        Name
-        <input
-          type="text"
-          name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-          value={name}
-          onChange={handleInputChange}
-        />
-      </label>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <label>Name</label>
+        <input type="text" {...register('name')} />
+        {errors.name && <p>{errors.name.message}</p>}
+      </div>
 
-      <label>
-        Number
-        <input
-          type="tel"
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-          value={number}
-          onChange={handleInputChange}
-        />
-      </label>
+      <div>
+        <label>Number</label>
+        <input type="tel" {...register('number')} />
+        {errors.number && <p>{errors.number.message}</p>}
+      </div>
 
-      <button className={css.ContactForm__Btn} type="submit">
-        Add contact
-      </button>
+      <button type="submit">Add contact</button>
     </form>
   );
 };
