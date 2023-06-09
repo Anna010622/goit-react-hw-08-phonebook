@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { addContact } from 'redux/operations';
+import { getContacts, getLoading } from 'redux/selectors';
 
 const schema = yup
   .object({
@@ -15,7 +15,7 @@ const schema = yup
         /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
         'Name may contain only letters, apostrophe, dash and spaces'
       ),
-    number: yup
+    phone: yup
       .string()
       .min(7, 'Number phone must be no less than 7 characters long')
       .max(17, 'Number phone must be no more than 17 characters long')
@@ -29,7 +29,8 @@ const schema = yup
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contactsList);
+  const contacts = useSelector(getContacts);
+  const isLoading = useSelector(getLoading);
 
   const {
     register,
@@ -41,7 +42,7 @@ export const ContactForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ name, number }) => {
+  const onSubmit = ({ name, phone }) => {
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -50,7 +51,7 @@ export const ContactForm = () => {
       return alert(`${name} is already in contacts`);
     }
 
-    dispatch(addContact(name, number));
+    dispatch(addContact({ name, phone }));
     reset();
   };
 
@@ -63,12 +64,14 @@ export const ContactForm = () => {
       </div>
 
       <div>
-        <label>Number</label>
-        <input type="tel" {...register('number')} />
-        {errors.number && <p>{errors.number.message}</p>}
+        <label>Phone</label>
+        <input type="tel" {...register('phone')} />
+        {errors.phone && <p>{errors.phone.message}</p>}
       </div>
 
-      <button type="submit">Add contact</button>
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? <span>loading...</span> : <span>Add contact</span>}
+      </button>
     </form>
   );
 };
