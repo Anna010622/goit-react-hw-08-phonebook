@@ -4,6 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { addContact } from 'redux/operations';
 import { getContacts, getLoading } from 'redux/selectors';
+import { useEffect, useState } from 'react';
+import { RotatingLines } from 'react-loader-spinner';
+import { toast } from 'react-toastify';
 
 const schema = yup
   .object({
@@ -17,8 +20,9 @@ const schema = yup
       ),
     phone: yup
       .string()
+      .transform(currentValue => currentValue.replace(/\D+/g, ''))
       .min(7, 'Number phone must be no less than 7 characters long')
-      .max(17, 'Number phone must be no more than 17 characters long')
+      .max(12, 'Number phone must be no more than 12 digits')
       .required('Number is required')
       .matches(
         /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
@@ -28,27 +32,30 @@ const schema = yup
   .required();
 
 export const ContactForm = () => {
+  const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
   const isLoading = useSelector(getLoading);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm({
+  useEffect(() => {
+    if (!isLoading) {
+      setIsClicked(false);
+    }
+  }, [isLoading]);
+
+  const { register, handleSubmit, reset, formState } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(schema),
   });
 
   const onSubmit = ({ name, phone }) => {
+    setIsClicked(true);
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
-      return alert(`${name} is already in contacts`);
+      return toast.warn(`${name} is already in contacts`);
     }
 
     dispatch(addContact({ name, phone }));
@@ -60,17 +67,23 @@ export const ContactForm = () => {
       <div>
         <label>Name</label>
         <input type="text" {...register('name')} />
-        {errors.name && <p>{errors.name.message}</p>}
+        {formState.errors.name && <p>{formState.errors.name.message}</p>}
       </div>
 
       <div>
         <label>Phone</label>
         <input type="tel" {...register('phone')} />
-        {errors.phone && <p>{errors.phone.message}</p>}
+        {formState.errors.phone && <p>{formState.errors.phone.message}</p>}
       </div>
 
-      <button type="submit" disabled={isLoading}>
-        {isLoading ? <span>loading...</span> : <span>Add contact</span>}
+      <button
+        type="submit"
+        disabled={(isLoading && isClicked) || !formState.isValid}
+      >
+        <span>Add contact</span>
+        {isLoading && isClicked && (
+          <RotatingLines strokeColor="grey" width="20px" />
+        )}
       </button>
     </form>
   );

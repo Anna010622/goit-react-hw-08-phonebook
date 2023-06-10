@@ -1,8 +1,9 @@
+import { ContactItem } from 'components/ContactItem/ContactItem';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact, fetchContacts } from 'redux/operations';
+import { fetchContacts } from 'redux/operations';
 import { getContacts, getFilter, getLoading } from 'redux/selectors';
-import { formatContact } from 'utils';
+import { RotatingLines } from 'react-loader-spinner';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
@@ -23,22 +24,26 @@ export const ContactList = () => {
   };
 
   return (
-    <ul>
-      {getVisibleContacts().map(contact => {
-        return (
-          <li key={contact.id}>
-            <span>{contact.name}: </span>
-            <span>{formatContact(contact.phone)}</span>
-            <button
-              type="button"
-              onClick={() => dispatch(deleteContact(contact.id))}
-              disabled={isLoading}
-            >
-              Delete
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+    <div>
+      {/* {error && <p>Something went wrong, please try again later</p>} */}
+      {contacts.length === 0 && isLoading && (
+        <RotatingLines
+          strokeColor="grey"
+          strokeWidth="5"
+          animationDuration="0.75"
+          width="96"
+          visible={true}
+        />
+      )}
+      {contacts.length === 0 ? (
+        <p>There is no contacts yet.</p>
+      ) : (
+        <ul>
+          {getVisibleContacts().map(contact => {
+            return <ContactItem key={contact.id} contact={contact} />;
+          })}
+        </ul>
+      )}
+    </div>
   );
 };
