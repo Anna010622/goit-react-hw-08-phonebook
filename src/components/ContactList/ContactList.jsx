@@ -3,12 +3,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/contacts/contactsOperations';
 import { getContacts, getFilter, getLoading } from 'redux/selectors';
-import { RotatingLines } from 'react-loader-spinner';
 import {
   Center,
   CircularProgress,
   Table,
-  TableCaption,
   TableContainer,
   Tbody,
   Text,

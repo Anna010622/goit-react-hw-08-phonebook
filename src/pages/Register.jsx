@@ -9,17 +9,14 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { getContacts, getLoading } from 'redux/selectors';
-import { useEffect, useState } from 'react';
-import { RotatingLines } from 'react-loader-spinner';
+import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signup } from 'redux/auth/authOperations';
-import { HttpStatusCode } from 'axios';
 
 const schema = yup
   .object({

@@ -1,12 +1,5 @@
 import { DeleteIcon } from '@chakra-ui/icons';
-import {
-  Button,
-  ButtonGroup,
-  CircularProgress,
-  Flex,
-  Td,
-  Tr,
-} from '@chakra-ui/react';
+import { Button, CircularProgress, Flex, Td, Tr } from '@chakra-ui/react';
 import { PopoverForm } from 'components/Popover/Popover';
 import { PropTypes } from 'prop-types';
 import { useState } from 'react';

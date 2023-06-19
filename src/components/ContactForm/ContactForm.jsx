@@ -3,9 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { addContact } from 'redux/contacts/contactsOperations';
-import { getContacts, getLoading } from 'redux/selectors';
-import { useEffect, useState } from 'react';
-import { RotatingLines } from 'react-loader-spinner';
+import { getContacts } from 'redux/selectors';
 import { toast } from 'react-toastify';
 import {
   Button,
@@ -15,7 +13,6 @@ import {
   Heading,
   Input,
   VStack,
-  useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
 
@@ -43,7 +40,7 @@ export const schema = yup
   .required();
 
 export const ContactForm = () => {
-  const [isClicked, setIsClicked] = useState(false);
+  // const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
   // const isLoading = useSelector(getLoading);
@@ -58,16 +55,14 @@ export const ContactForm = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isLoading },
+    formState: { errors },
   } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(schema),
   });
-  console.log(useForm());
-  console.log(isSubmitting);
 
   const onSubmit = ({ name, number }) => {
-    setIsClicked(true);
+    // setIsClicked(true);
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -110,12 +105,7 @@ export const ContactForm = () => {
         </FormErrorMessage>
       </FormControl>
 
-      <Button
-        type="submit"
-        variant="outline"
-        colorScheme="teal"
-        isLoading={isSubmitting}
-      >
+      <Button type="submit" variant="outline" colorScheme="teal">
         Add contact
       </Button>
     </VStack>
