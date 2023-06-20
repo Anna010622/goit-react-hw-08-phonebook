@@ -8,6 +8,7 @@ const {
   Button,
   Box,
   useColorModeValue,
+  Avatar,
 } = require('@chakra-ui/react');
 
 const Home = () => {
@@ -21,10 +22,12 @@ const Home = () => {
       w={{ base: '100%', md: '90%', lg: '80%' }}
       justifyContent="center"
       paddingLeft={{ md: '10%', lg: '20%' }}
+      pb={6}
     >
       <Box display="flex" h="100%" w="100%">
         <Box w="90%" h="100%" bg={bookBg} borderRadius="10px" p={6}>
-          <Center height="100%" flexDirection="column">
+          <Center height="100%" flexDirection="column" minH="270px">
+            <Avatar bg="transparent" size="2xl" />
             <Heading
               color={color}
               as="h1"
@@ -62,50 +65,50 @@ const Home = () => {
           </Center>
         </Box>
         <Flex w="10%" flexDirection="column" justifyContent="space-evenly">
-          <Box
-            h="72px"
+          <Center
+            h="15%"
             w="100%"
             bg="cyan.200"
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
-            <Text fontSize="5xl" color={color} textAlign="center">
+            <Text fontSize="2em%" color={color} textAlign="center">
               A
             </Text>
-          </Box>
-          <Box
-            h="72px"
+          </Center>
+          <Center
+            h="15%"
             w="100%"
             bg="green.200"
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
-            <Text fontSize="5xl" color={color} textAlign="center">
+            <Text fontSize="2em%" color={color} textAlign="center">
               B
             </Text>
-          </Box>
-          <Box
-            h="72px"
+          </Center>
+          <Center
+            h="15%"
             w="100%"
             bg="red.200"
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
-            <Text fontSize="5xl" color={color} textAlign="center">
+            <Text fontSize="2em%" color={color} textAlign="center">
               C
             </Text>
-          </Box>
-          <Box
-            h="72px"
+          </Center>
+          <Center
+            h="15%"
             w="100%"
             bg="yellow.200"
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
-            <Text fontSize="5xl" color={color} textAlign="center">
+            <Text fontSize="2em%" color={color} textAlign="center">
               D
             </Text>
-          </Box>
+          </Center>
         </Flex>
       </Box>
     </Flex>
