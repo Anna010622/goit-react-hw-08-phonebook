@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/contacts/contactsOperations';
 import { getContacts, getFilter, getLoading } from 'redux/selectors';
 import {
-  Box,
   Center,
   CircularProgress,
   Heading,
-  List,
-  ListItem,
+  Table,
+  TableContainer,
+  Tbody,
   Text,
+  Th,
+  Thead,
+  Tr,
   useColorModeValue,
 } from '@chakra-ui/react';
 
@@ -31,18 +34,12 @@ export const ContactList = () => {
     );
   };
 
-  const stickyHeaders = getVisibleContacts()
-    .map(contact => contact.name[0].toUpperCase())
-    .filter((el, index, array) => array.indexOf(el) === index);
-
-  const createContactGroup = el => {
-    const contactGroup = getVisibleContacts().filter(
-      contact => contact.name[0].toUpperCase() === el
-    );
-    return contactGroup;
-  };
-
-  const bg = useColorModeValue('teal.100', '#172a46');
+  const bg = useColorModeValue('#ffffff', '#172a46');
+  const boxShadow = useColorModeValue(
+    '#086F83 0px 0px 10px',
+    '#5ff0d0 0px 0px 10px'
+  );
+  const color = useColorModeValue('gray.600', '#5ff0d0');
 
   return (
     <div>
@@ -63,31 +60,47 @@ export const ContactList = () => {
       )}
 
       {contacts.length !== 0 && getVisibleContacts().length > 0 && (
-        <Box position="relative">
-          <List position="relative">
-            {stickyHeaders.map(el => (
-              <ListItem key={`section-${el}`}>
-                <List>
-                  <Heading
-                    position="sticky"
-                    top="15px"
-                    bg={bg}
-                    paddingLeft="5px"
-                    opacity="0.8"
-                    borderRadius="5px"
-                  >
-                    {el}
-                  </Heading>
-                  <Box>
-                    {createContactGroup(el).map(contact => (
-                      <ContactItem key={contact.id} contact={contact} />
-                    ))}
-                  </Box>
-                </List>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
+        // <ul>
+        //   {getVisibleContacts().map(contact => {
+        //     return <ContactItem key={contact.id} contact={contact} />;
+        //   })}
+        //   </ul>
+        <TableContainer
+          borderRadius={10}
+          mb={6}
+          boxShadow={boxShadow}
+          p={4}
+          bg={bg}
+          display="flex"
+          gap={4}
+        >
+          <Table colorScheme={color} overflow="hidden" size="sm">
+            <Thead
+              fontWeight="600"
+              fontSize={8}
+              borderBottom="2px solid"
+              borderColor={color}
+            >
+              <Tr borderColor="teal.600">
+                <Th>
+                  <Text fontSize={16} color={color}>
+                    Name
+                  </Text>
+                </Th>
+                <Th colSpan="2">
+                  <Text fontSize={16} color={color}>
+                    Phone number
+                  </Text>
+                </Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {getVisibleContacts().map(contact => {
+                return <ContactItem key={contact.id} contact={contact} />;
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
       )}
     </div>
   );

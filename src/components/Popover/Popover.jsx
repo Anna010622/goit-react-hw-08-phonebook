@@ -25,7 +25,6 @@ export const PopoverForm = ({ contact }) => {
         initialFocusRef={firstFieldRef}
         onOpen={onOpen}
         onClose={onClose}
-        placement="right"
         closeOnBlur={true}
       >
         <PopoverTrigger>
@@ -35,6 +34,8 @@ export const PopoverForm = ({ contact }) => {
             icon={<EditIcon />}
             variant="outline"
             colorScheme="teal"
+            _hover={{ bg: 'teal.100' }}
+            _focus={{ bg: 'teal.100' }}
           />
         </PopoverTrigger>
         <PopoverContent>

@@ -1,5 +1,5 @@
 import { DeleteIcon } from '@chakra-ui/icons';
-import { Button, CircularProgress, Flex, Td, Tr } from '@chakra-ui/react';
+import { Box, Button, ListItem } from '@chakra-ui/react';
 import { PopoverForm } from 'components/Popover/Popover';
 import { PropTypes } from 'prop-types';
 import { useState } from 'react';
@@ -12,49 +12,48 @@ export const ContactItem = ({ contact }) => {
   const dispatch = useDispatch();
 
   return (
-    <Tr key={contact.id}>
-      <Td p={{ base: '5px', md: '8px' }}>{contact.name}</Td>
-      <Td p={{ base: '5px', md: '8px' }}>{formatContact(contact.number)}</Td>
-      <Td p={{ base: '5px', md: '8px' }}>
-        <Flex gap="2" alignItems="center" justifyContent="flex-end">
-          <PopoverForm contact={contact} />
-          <Button
-            type="button"
-            onClick={() => {
-              dispatch(deleteContact(contact.id));
-              setIsDeleting(true);
-            }}
-            disabled={isDeleting}
-            p={0}
-            w={8}
-            h={8}
-            variant="outline"
-            colorScheme="teal"
-          >
-            {isDeleting ? (
-              <CircularProgress isIndeterminate color="teal.800" size="16px" />
-            ) : (
-              <DeleteIcon boxSize={4} p="0" />
-            )}
-          </Button>
-        </Flex>
-      </Td>
-    </Tr>
-    // <li key={contact.id}>
-    //   <span>{contact.name}: </span>
-    //   <span>{formatContact(contact.number)}</span>
-    //   <PopoverForm contact={contact} />
-    //   <button
-    //     type="button"
-    //     onClick={() => {
-    //       dispatch(deleteContact(contact.id));
-    //       setIsDeleting(true);
-    //     }}
-    //     disabled={isDeleting}
-    //   >
-    //     {isDeleting ? <span>deleting...</span> : <DeleteIcon />}
-    //   </button>
-    // </li>
+    <ListItem
+      key={contact.id}
+      paddingLeft={{ base: '12px', md: '35px', lg: '40px' }}
+      paddingRight={{ base: '12px', md: '20px' }}
+      paddingTop={1}
+      paddingBottom={1}
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+    >
+      <Box flexBasis="40%">{contact.name}: </Box>
+      <Box flexBasis="40%">{formatContact(contact.number)}</Box>
+      <Box
+        flexBasis="20%"
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+        gap={{ base: '5px', md: '10px' }}
+      >
+        <PopoverForm contact={contact} />
+        <Button
+          type="button"
+          onClick={() => {
+            dispatch(deleteContact(contact.id));
+            setIsDeleting(true);
+          }}
+          disabled={isDeleting}
+          colorScheme="teal"
+          variant="outline"
+          w={8}
+          h={8}
+          _hover={{ bg: 'teal.100' }}
+          _focus={{ bg: 'teal.100' }}
+        >
+          {isDeleting ? (
+            <span>deleting...</span>
+          ) : (
+            <DeleteIcon color={'teal.700'} />
+          )}
+        </Button>
+      </Box>
+    </ListItem>
   );
 };
 
