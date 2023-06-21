@@ -7,16 +7,16 @@ import {
   Heading,
   Button,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { login } from 'redux/auth/authOperations';
+import { selectAuthLoading } from 'redux/selectors';
 
 const schema = yup
   .object({
@@ -26,24 +26,36 @@ const schema = yup
   .required();
 
 const Login = () => {
-  const bg = useColorModeValue('gray.100', '#0a192f');
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectAuthLoading);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
+  const toast = useToast();
 
   const onSubmit = data => {
     dispatch(login(data))
       .unwrap()
-      .catch(() => toast.error(`Email or password is incorrect`));
+      .catch(() =>
+        toast({
+          title: `Email or password is incorrect`,
+          variant: 'subtle',
+          isClosable: true,
+          position: 'top-right',
+          status: 'error',
+          duration: 3000,
+        })
+      );
   };
+
+  const bg = useColorModeValue('gray.100', '#0a192f');
 
   return (
     <VStack
@@ -75,7 +87,7 @@ const Login = () => {
         type="submit"
         variant="outline"
         colorScheme="teal"
-        isLoading={isSubmitting}
+        isLoading={isLoading}
       >
         Login
       </Button>

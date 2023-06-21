@@ -1,15 +1,20 @@
-import { DeleteIcon } from '@chakra-ui/icons';
-import { Box, Button, ListItem } from '@chakra-ui/react';
+import { Box, ListItem } from '@chakra-ui/react';
 import { PopoverForm } from 'components/Popover/Popover';
 import { PropTypes } from 'prop-types';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteContact } from 'redux/contacts/contactsOperations';
 import { formatContact } from 'utils';
+import { WarningAlert } from '../AlertDialog/AlertDialog';
 
 export const ContactItem = ({ contact }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteContact(contact.id));
+    setIsDeleting(true);
+  };
 
   return (
     <ListItem
@@ -32,26 +37,7 @@ export const ContactItem = ({ contact }) => {
         gap={{ base: '5px', md: '10px' }}
       >
         <PopoverForm contact={contact} />
-        <Button
-          type="button"
-          onClick={() => {
-            dispatch(deleteContact(contact.id));
-            setIsDeleting(true);
-          }}
-          disabled={isDeleting}
-          colorScheme="teal"
-          variant="outline"
-          w={8}
-          h={8}
-          _hover={{ bg: 'teal.100' }}
-          _focus={{ bg: 'teal.100' }}
-        >
-          {isDeleting ? (
-            <span>deleting...</span>
-          ) : (
-            <DeleteIcon color={'teal.700'} />
-          )}
-        </Button>
+        <WarningAlert onClick={handleDelete} isDeleting={isDeleting} />
       </Box>
     </ListItem>
   );

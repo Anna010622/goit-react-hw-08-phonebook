@@ -7,16 +7,16 @@ import {
   Heading,
   Button,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { signup } from 'redux/auth/authOperations';
+import { selectAuthLoading } from 'redux/selectors';
 
 const schema = yup
   .object({
@@ -35,27 +35,14 @@ const schema = yup
   .required();
 
 const Register = () => {
-  const bg = useColorModeValue('gray.100', '#0a192f');
-
-  // const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
-
-  useEffect(() => {}, []);
-  // const contacts = useSelector(getContacts);
-  // const isLoading = useSelector(getLoading);
-
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     setIsClicked(false);
-  //   }
-  // }, [isLoading]);
-
+  const isLoading = useSelector(selectAuthLoading);
+  const toast = useToast();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     mode: 'onTouched',
     resolver: yupResolver(schema),
@@ -64,9 +51,29 @@ const Register = () => {
   const onSubmit = data => {
     dispatch(signup(data))
       .unwrap()
-      .then(() => toast.success(`Registration is successfully`))
-      .catch(() => toast.error(`User with this email address already exists`));
+      .then(() =>
+        toast({
+          title: `Registration is successfully`,
+          variant: 'subtle',
+          isClosable: true,
+          position: 'top-right',
+          status: 'success',
+          duration: 3000,
+        })
+      )
+      .catch(() =>
+        toast({
+          title: `User with this email address already exists`,
+          variant: 'subtle',
+          isClosable: true,
+          position: 'top-right',
+          status: 'error',
+          duration: 3000,
+        })
+      );
   };
+
+  const bg = useColorModeValue('gray.100', '#0a192f');
 
   return (
     <VStack
@@ -106,7 +113,7 @@ const Register = () => {
         type="submit"
         variant="outline"
         colorScheme="teal"
-        isLoading={isSubmitting}
+        isLoading={isLoading}
       >
         Sign Up
       </Button>

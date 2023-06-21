@@ -9,9 +9,6 @@ const Contacts = () => {
       <Box display={{ lg: 'flex' }} gap={8} alignItems="flex-start">
         <ContactForm />
         <Box flexGrow={1}>
-          {/* <Heading fontSize="3em" mb={6}>
-            Contacts
-          </Heading> */}
           <Filter />
           <ContactList />
         </Box>

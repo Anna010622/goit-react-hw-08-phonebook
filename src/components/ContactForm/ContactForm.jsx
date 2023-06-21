@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { addContact } from 'redux/contacts/contactsOperations';
-import { getContacts } from 'redux/selectors';
-import { toast } from 'react-toastify';
+import { selectContacts, selectContactsLoading } from 'redux/selectors';
 import {
   Button,
   FormControl,
@@ -15,6 +14,8 @@ import {
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useToast } from '@chakra-ui/react';
 
 export const schema = yup
   .object({
@@ -40,16 +41,17 @@ export const schema = yup
   .required();
 
 export const ContactForm = () => {
-  // const [isClicked, setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  // const isLoading = useSelector(getLoading);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectContactsLoading);
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     setIsClicked(false);
-  //   }
-  // }, [isLoading]);
+  const toast = useToast();
+  useEffect(() => {
+    if (!isLoading) {
+      setIsClicked(false);
+    }
+  }, [isLoading]);
 
   const {
     register,
@@ -62,13 +64,20 @@ export const ContactForm = () => {
   });
 
   const onSubmit = ({ name, number }) => {
-    // setIsClicked(true);
+    setIsClicked(true);
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       )
     ) {
-      return toast.warn(`${name} is already in contacts`);
+      return toast({
+        title: `${name} is already in contacts`,
+        variant: 'subtle',
+        isClosable: true,
+        position: 'top-right',
+        status: 'warning',
+        duration: 3000,
+      });
     }
 
     dispatch(addContact({ name, number }));
@@ -105,33 +114,14 @@ export const ContactForm = () => {
         </FormErrorMessage>
       </FormControl>
 
-      <Button type="submit" variant="outline" colorScheme="teal">
+      <Button
+        type="submit"
+        variant="outline"
+        colorScheme="teal"
+        isLoading={isLoading && isClicked}
+      >
         Add contact
       </Button>
     </VStack>
-
-    // <form onSubmit={handleSubmit(onSubmit)}>
-    //   <div>
-    //     <label>Name</label>
-    //     <input type="text" {...register('name')} />
-    //     {formState.errors.name && <p>{formState.errors.name.message}</p>}
-    //   </div>
-
-    //   <div>
-    //     <label>Phone</label>
-    //     <input type="tel" {...register('number')} />
-    //     {formState.errors.number && <p>{formState.errors.number.message}</p>}
-    //   </div>
-
-    //   <button
-    //     type="submit"
-    //     disabled={(isLoading && isClicked) || !formState.isValid}
-    //   >
-    //     <span>Add contact</span>
-    //     {isLoading && isClicked && (
-    //       <RotatingLines strokeColor="grey" width="20px" />
-    //     )}
-    //   </button>
-    // </form>
   );
 };

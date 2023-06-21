@@ -1,11 +1,12 @@
 import { Avatar, Button, Flex, Heading } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'redux/auth/authOperations';
-import { selectUserName } from 'redux/selectors';
+import { selectAuthLoading, selectUserName } from 'redux/selectors';
 
 export const UserMenu = () => {
   const userName = useSelector(selectUserName);
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectAuthLoading);
 
   return (
     <>
@@ -19,6 +20,7 @@ export const UserMenu = () => {
         onClick={() => dispatch(logout())}
         variant="outline"
         colorScheme="teal"
+        isLoading={isLoading}
       >
         Log out
       </Button>

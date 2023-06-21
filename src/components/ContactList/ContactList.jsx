@@ -2,7 +2,11 @@ import { ContactItem } from 'components/ContactItem/ContactItem';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchContacts } from 'redux/contacts/contactsOperations';
-import { getContacts, getFilter, getLoading } from 'redux/selectors';
+import {
+  selectContacts,
+  selectContactsLoading,
+  selectFilter,
+} from 'redux/selectors';
 import {
   Box,
   Center,
@@ -16,9 +20,9 @@ import {
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilter);
-  const isLoading = useSelector(getLoading);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+  const isLoading = useSelector(selectContactsLoading);
 
   useEffect(() => {
     dispatch(fetchContacts());

@@ -34,16 +34,7 @@ export const MobileMenu = ({ children }) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          {/* <DrawerHeader>Create your account</DrawerHeader> */}
-
           <DrawerBody p={6}>{children}</DrawerBody>
-
-          {/* <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='blue'>Save</Button>
-          </DrawerFooter> */}
         </DrawerContent>
       </Drawer>
     </>

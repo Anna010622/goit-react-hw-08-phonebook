@@ -6,12 +6,12 @@ import {
   Input,
   VStack,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { schema } from 'components/ContactForm/ContactForm';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 import { updateContact } from 'redux/contacts/contactsOperations';
 
 export const EditForm = ({ onCancel, contact }) => {
@@ -23,7 +23,7 @@ export const EditForm = ({ onCancel, contact }) => {
     mode: 'onTouched',
     resolver: yupResolver(schema),
   });
-
+  const toast = useToast();
   const dispatch = useDispatch();
 
   const onSubmit = data => {
@@ -31,10 +31,26 @@ export const EditForm = ({ onCancel, contact }) => {
     dispatch(updateContact({ id: contact.id, body: { name, number } }))
       .unwrap()
       .then(() => {
-        toast.success(`Contact updated`);
+        toast({
+          title: `Contact updated`,
+          variant: 'subtle',
+          isClosable: true,
+          position: 'top-right',
+          status: 'success',
+          duration: 3000,
+        });
         onCancel();
       })
-      .catch(() => toast.error(`Something went wrong. Please try again later`));
+      .catch(() =>
+        toast({
+          title: `Something went wrong. Please try again later`,
+          variant: 'subtle',
+          isClosable: true,
+          position: 'top-right',
+          status: 'error',
+          duration: 3000,
+        })
+      );
   };
 
   const bg = useColorModeValue('teal.50', '#0a192f');

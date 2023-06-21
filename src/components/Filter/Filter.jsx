@@ -7,11 +7,11 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFilter } from 'redux/filterSlice';
-import { getContacts, getFilter } from 'redux/selectors';
+import { selectContacts, selectFilter } from 'redux/selectors';
 
 export const Filter = () => {
-  const filterValue = useSelector(getFilter);
-  const contacts = useSelector(getContacts);
+  const filterValue = useSelector(selectFilter);
+  const contacts = useSelector(selectContacts);
 
   const dispatch = useDispatch();
 
