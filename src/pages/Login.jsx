@@ -8,6 +8,9 @@ import {
   Button,
   useColorModeValue,
   useToast,
+  InputGroup,
+  InputRightElement,
+  InputLeftElement,
 } from '@chakra-ui/react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +20,8 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { login } from 'redux/auth/authOperations';
 import { selectAuthLoading } from 'redux/selectors';
+import { useState } from 'react';
+import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const schema = yup
   .object({
@@ -28,6 +33,10 @@ const schema = yup
 const Login = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectAuthLoading);
+  const navigate = useNavigate();
+  const toast = useToast();
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
 
   const {
     register,
@@ -37,8 +46,6 @@ const Login = () => {
     mode: 'onTouched',
     resolver: yupResolver(schema),
   });
-  const navigate = useNavigate();
-  const toast = useToast();
 
   const onSubmit = data => {
     dispatch(login(data))
@@ -46,7 +53,6 @@ const Login = () => {
       .catch(() =>
         toast({
           title: `Email or password is incorrect`,
-          variant: 'subtle',
           isClosable: true,
           position: 'top-right',
           status: 'error',
@@ -56,6 +62,7 @@ const Login = () => {
   };
 
   const bg = useColorModeValue('gray.100', '#0a192f');
+  const iconBg = useColorModeValue('teal.800', 'teal.500');
 
   return (
     <VStack
@@ -69,7 +76,18 @@ const Login = () => {
 
       <FormControl isInvalid={errors.email} isRequired>
         <FormLabel>Email</FormLabel>
-        <Input type="email" {...register('email')} bg={bg} />
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <EmailIcon color={iconBg} />
+          </InputLeftElement>
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            _placeholder={{ opacity: 0.5, color: 'inherit' }}
+            {...register('email')}
+            bg={bg}
+          />
+        </InputGroup>
         <FormErrorMessage>
           {errors.email && errors.email.message}
         </FormErrorMessage>
@@ -77,7 +95,33 @@ const Login = () => {
 
       <FormControl isInvalid={errors.password} isRequired>
         <FormLabel>Password</FormLabel>
-        <Input type="password" {...register('password')} bg={bg} />
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type={show ? 'text' : 'password'}
+            placeholder="Enter password"
+            _placeholder={{ opacity: 0.5, color: 'inherit' }}
+            {...register('password')}
+            bg={bg}
+          />
+          <InputLeftElement pointerEvents="none">
+            <LockIcon color={iconBg} />
+          </InputLeftElement>
+          <InputRightElement width="4.5rem">
+            <Button
+              h="1.75rem"
+              size="sm"
+              onClick={handleClick}
+              background="transparent"
+            >
+              {show ? (
+                <ViewOffIcon color={iconBg} />
+              ) : (
+                <ViewIcon color={iconBg} />
+              )}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
         <FormErrorMessage>
           {errors.password && errors.password.message}
         </FormErrorMessage>

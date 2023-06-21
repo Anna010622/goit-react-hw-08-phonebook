@@ -33,7 +33,6 @@ export const EditForm = ({ onCancel, contact }) => {
       .then(() => {
         toast({
           title: `Contact updated`,
-          variant: 'subtle',
           isClosable: true,
           position: 'top-right',
           status: 'success',
@@ -44,7 +43,6 @@ export const EditForm = ({ onCancel, contact }) => {
       .catch(() =>
         toast({
           title: `Something went wrong. Please try again later`,
-          variant: 'subtle',
           isClosable: true,
           position: 'top-right',
           status: 'error',
@@ -64,10 +62,6 @@ export const EditForm = ({ onCancel, contact }) => {
           defaultValue={contact?.name}
           bg={bg}
         />
-        {/*  */}
-        {/* <FormErrorMessage>
-          {errors.name && toast.error(`${errors.name.message}`)}
-        </FormErrorMessage> */}
       </FormControl>
 
       <FormControl isInvalid={errors.number} isRequired>
@@ -78,9 +72,6 @@ export const EditForm = ({ onCancel, contact }) => {
           defaultValue={contact?.number}
           bg={bg}
         />
-        {/* <FormErrorMessage>
-          <Box>{errors.number && errors.number.message}</Box>
-        </FormErrorMessage> */}
       </FormControl>
 
       <ButtonGroup display="flex" justifyContent="flex-end">

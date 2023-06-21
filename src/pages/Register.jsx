@@ -8,6 +8,10 @@ import {
   Button,
   useColorModeValue,
   useToast,
+  InputLeftElement,
+  InputGroup,
+  InputRightElement,
+  Avatar,
 } from '@chakra-ui/react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +21,8 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { signup } from 'redux/auth/authOperations';
 import { selectAuthLoading } from 'redux/selectors';
+import { EmailIcon, LockIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 const schema = yup
   .object({
@@ -39,6 +45,8 @@ const Register = () => {
   const navigate = useNavigate();
   const isLoading = useSelector(selectAuthLoading);
   const toast = useToast();
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
   const {
     register,
     handleSubmit,
@@ -54,7 +62,6 @@ const Register = () => {
       .then(() =>
         toast({
           title: `Registration is successfully`,
-          variant: 'subtle',
           isClosable: true,
           position: 'top-right',
           status: 'success',
@@ -64,7 +71,6 @@ const Register = () => {
       .catch(() =>
         toast({
           title: `User with this email address already exists`,
-          variant: 'subtle',
           isClosable: true,
           position: 'top-right',
           status: 'error',
@@ -73,7 +79,8 @@ const Register = () => {
       );
   };
 
-  const bg = useColorModeValue('gray.100', '#0a192f');
+  const bg = useColorModeValue('teal.50', '#0a192f');
+  const iconBg = useColorModeValue('teal.800', 'teal.500');
 
   return (
     <VStack
@@ -87,7 +94,18 @@ const Register = () => {
 
       <FormControl isInvalid={errors.name} isRequired>
         <FormLabel>Name</FormLabel>
-        <Input type="text" {...register('name')} bg={bg} />
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <Avatar bg={iconBg} size="xs" />
+          </InputLeftElement>
+          <Input
+            type="text"
+            placeholder="Enter your name"
+            _placeholder={{ opacity: 0.5, color: 'inherit' }}
+            {...register('name')}
+            bg={bg}
+          />
+        </InputGroup>
         <FormErrorMessage>
           {errors.name && errors.name.message}
         </FormErrorMessage>
@@ -95,7 +113,19 @@ const Register = () => {
 
       <FormControl isInvalid={errors.email} isRequired>
         <FormLabel>Email</FormLabel>
-        <Input type="email" {...register('email')} bg={bg} />
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <EmailIcon color={iconBg} />
+          </InputLeftElement>
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            _placeholder={{ opacity: 0.5, color: 'inherit' }}
+            {...register('email')}
+            bg={bg}
+          />
+        </InputGroup>
+
         <FormErrorMessage>
           {errors.email && errors.email.message}
         </FormErrorMessage>
@@ -103,7 +133,33 @@ const Register = () => {
 
       <FormControl isInvalid={errors.password} isRequired>
         <FormLabel>Password</FormLabel>
-        <Input type="password" {...register('password')} bg={bg} />
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type={show ? 'text' : 'password'}
+            placeholder="Enter password"
+            _placeholder={{ opacity: 0.5, color: 'inherit' }}
+            {...register('password')}
+            bg={bg}
+          />
+          <InputLeftElement pointerEvents="none">
+            <LockIcon color={iconBg} />
+          </InputLeftElement>
+          <InputRightElement width="4.5rem">
+            <Button
+              h="1.75rem"
+              size="sm"
+              onClick={handleClick}
+              background="transparent"
+            >
+              {show ? (
+                <ViewOffIcon color={iconBg} />
+              ) : (
+                <ViewIcon color={iconBg} />
+              )}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
         <FormErrorMessage>
           {errors.password && errors.password.message}
         </FormErrorMessage>

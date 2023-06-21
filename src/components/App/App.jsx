@@ -22,7 +22,6 @@ export const App = () => {
     if (error) {
       toast({
         title: 'Something went wrong, please try again later',
-        variant: 'subtle',
         isClosable: true,
         position: 'top-right',
         status: 'error',

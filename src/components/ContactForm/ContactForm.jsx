@@ -5,17 +5,21 @@ import * as yup from 'yup';
 import { addContact } from 'redux/contacts/contactsOperations';
 import { selectContacts, selectContactsLoading } from 'redux/selectors';
 import {
+  Avatar,
   Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Heading,
   Input,
+  InputGroup,
+  InputLeftElement,
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useToast } from '@chakra-ui/react';
+import { PhoneIcon } from '@chakra-ui/icons';
 
 export const schema = yup
   .object({
@@ -72,10 +76,9 @@ export const ContactForm = () => {
     ) {
       return toast({
         title: `${name} is already in contacts`,
-        variant: 'subtle',
         isClosable: true,
         position: 'top-right',
-        status: 'warning',
+        status: 'info',
         duration: 3000,
       });
     }
@@ -85,6 +88,7 @@ export const ContactForm = () => {
   };
 
   const bg = useColorModeValue('teal.50', '#0a192f');
+  const iconBg = useColorModeValue('teal.800', 'teal.500');
 
   return (
     <VStack
@@ -100,7 +104,18 @@ export const ContactForm = () => {
 
       <FormControl isInvalid={errors.name} isRequired>
         <FormLabel fontWeight="600">Name</FormLabel>
-        <Input type="text" {...register('name')} bg={bg} />
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <Avatar bg={iconBg} size="xs" />
+          </InputLeftElement>
+          <Input
+            type="text"
+            placeholder="Enter contact name"
+            _placeholder={{ opacity: 0.5, color: 'inherit' }}
+            {...register('name')}
+            bg={bg}
+          />
+        </InputGroup>
         <FormErrorMessage>
           {errors.name && errors.name.message}
         </FormErrorMessage>
@@ -108,7 +123,18 @@ export const ContactForm = () => {
 
       <FormControl isInvalid={errors.number} isRequired>
         <FormLabel fontWeight="600">Phone</FormLabel>
-        <Input type="tel" {...register('number')} bg={bg} />
+        <InputGroup>
+          <InputLeftElement pointerEvents="none">
+            <PhoneIcon color={iconBg} />
+          </InputLeftElement>
+          <Input
+            type="tel"
+            placeholder="Enter phone number"
+            _placeholder={{ opacity: 0.5, color: 'inherit' }}
+            {...register('number')}
+            bg={bg}
+          />
+        </InputGroup>
         <FormErrorMessage>
           {errors.number && errors.number.message}
         </FormErrorMessage>

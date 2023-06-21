@@ -26,6 +26,7 @@ export const PopoverForm = ({ contact }) => {
         onOpen={onOpen}
         onClose={onClose}
         closeOnBlur={true}
+        placement="top"
       >
         <PopoverTrigger>
           <IconButton
