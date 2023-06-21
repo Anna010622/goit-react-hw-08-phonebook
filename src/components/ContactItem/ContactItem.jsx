@@ -27,7 +27,7 @@ export const ContactItem = ({ contact }) => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Box flexBasis="40%">{contact.name}: </Box>
+      <Box flexBasis="40%">{contact.name} </Box>
       <Box flexBasis="40%">{formatContact(contact.number)}</Box>
       <Box
         flexBasis="20%"
