@@ -1,4 +1,4 @@
-import { Center, CircularProgress, Container } from '@chakra-ui/react';
+import { Box, Center, CircularProgress, Container } from '@chakra-ui/react';
 import { Header } from 'components/Header/Header';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -14,7 +14,7 @@ export const Layout = () => {
       }}
     >
       <Header />
-      <main>
+      <Box as="main">
         <Suspense
           fallback={
             <Center>
@@ -24,7 +24,7 @@ export const Layout = () => {
         >
           <Outlet />
         </Suspense>
-      </main>
+      </Box>
     </Container>
   );
 };

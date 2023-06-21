@@ -141,7 +141,7 @@ const Login = () => {
         colorScheme="teal"
         variant="ghost"
       >
-        Sign up
+        Don't have an account yet? Register
       </Button>
     </VStack>
   );

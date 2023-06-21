@@ -179,7 +179,7 @@ const Register = () => {
         colorScheme="teal"
         variant="ghost"
       >
-        Login
+        Already have an account? Login
       </Button>
     </VStack>
   );

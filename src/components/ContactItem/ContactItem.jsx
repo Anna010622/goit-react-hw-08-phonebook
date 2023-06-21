@@ -1,4 +1,4 @@
-import { Box, ListItem } from '@chakra-ui/react';
+import { Box, ListItem, useColorModeValue } from '@chakra-ui/react';
 import { PopoverForm } from 'components/Popover/Popover';
 import { PropTypes } from 'prop-types';
 import { useState } from 'react';
@@ -16,6 +16,7 @@ export const ContactItem = ({ contact }) => {
     setIsDeleting(true);
   };
 
+  const bg = useColorModeValue('#ffffff', '#0a192f');
   return (
     <ListItem
       key={contact.id}
@@ -26,6 +27,9 @@ export const ContactItem = ({ contact }) => {
       display="flex"
       alignItems="center"
       justifyContent="space-between"
+      bg={bg}
+      opacity="0.8"
+      borderRadius="5px"
     >
       <Box flexBasis="40%">{contact.name} </Box>
       <Box flexBasis="40%">{formatContact(contact.number)}</Box>

@@ -1,4 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
+import abstract from './../images/abstract.svg';
 
 export const theme = extendTheme({
   config: {
@@ -14,6 +15,14 @@ export const theme = extendTheme({
       'html, body': {
         color: props.colorMode === 'dark' ? '#5ff0d0' : 'gray.600',
         backgroundColor: props.colorMode === 'dark' ? '#0a192f' : 'teal.50',
+        backgroundImage:
+          props.colorMode === 'dark'
+            ? `linear-gradient(rgba(10, 25, 47, 0.9), rgba(10, 25, 47, 0.9)), url( ${abstract})`
+            : `linear-gradient(rgba(230, 255, 250, 0.9), rgba(230, 255, 250, 0.9)), url( ${abstract})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundAttachment: 'fixed',
+        backgroundPosition: 'center',
       },
 
       form: {
