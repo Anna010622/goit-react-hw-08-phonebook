@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContactsError } from 'redux/selectors';
+import { selectContactsError, selectToken } from 'redux/selectors';
 import { lazy, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from 'components/Layout/Layout';
-import { currentUser } from 'redux/auth/authOperations';
+import { currentUser, logout, token } from 'redux/auth/authOperations';
 import { PrivateRoute } from 'components/PrivateRoute';
 import { PublicRoute } from 'components/PublicRoute';
 import { useToast } from '@chakra-ui/react';
@@ -17,6 +17,7 @@ export const App = () => {
   const error = useSelector(selectContactsError);
   const dispatch = useDispatch();
   const toast = useToast();
+  const access_token = useSelector(selectToken);
 
   useEffect(() => {
     if (error) {
@@ -31,8 +32,16 @@ export const App = () => {
   }, [error, toast]);
 
   useEffect(() => {
-    dispatch(currentUser());
-  }, [dispatch]);
+    if (access_token) {
+      token.set(access_token);
+      dispatch(currentUser())
+        .unwrap()
+        .then(() => {})
+        .catch(() => {
+          dispatch(logout());
+        });
+    }
+  }, [access_token, dispatch]);
 
   return (
     <Routes>

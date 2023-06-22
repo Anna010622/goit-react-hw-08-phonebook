@@ -52,7 +52,6 @@ export const ContactList = () => {
 
   return (
     <div>
-      {/* {error && <p>Something went wrong, please try again later</p>} */}
       {contacts.length === 0 && isLoading && (
         <Center>
           <CircularProgress isIndeterminate color="teal.800" />
@@ -64,6 +63,7 @@ export const ContactList = () => {
           There are no contacts yet. Please add a new contact
         </Text>
       )}
+
       {getVisibleContacts().length === 0 && contacts.length !== 0 && (
         <Text>There is no such contact</Text>
       )}

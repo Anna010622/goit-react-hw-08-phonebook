@@ -84,7 +84,7 @@ export const ContactForm = () => {
     }
     if (contacts.find(contact => contact.number === number)) {
       return toast({
-        title: `${number} is already in contacts`,
+        title: `Number: ${number} is already in contacts`,
         isClosable: true,
         position: 'top-right',
         status: 'info',

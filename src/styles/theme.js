@@ -12,7 +12,7 @@ export const theme = extendTheme({
   },
   styles: {
     global: props => ({
-      'html, body': {
+      body: {
         color: props.colorMode === 'dark' ? '#5ff0d0' : 'gray.600',
         backgroundColor: props.colorMode === 'dark' ? '#0a192f' : 'teal.50',
         backgroundImage:

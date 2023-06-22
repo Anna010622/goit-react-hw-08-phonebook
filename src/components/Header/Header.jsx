@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-import { selectIsLoggedIn } from 'redux/selectors';
+import { selectAuthLoading, selectIsLoggedIn } from 'redux/selectors';
 import { HeaderNav, HeaderNavLink } from './Header.styled';
 import { MobileMenu } from 'components/Drawer/Drawer';
 import { AuthNav } from 'components/AuthNav/AuthNav';
@@ -18,6 +18,7 @@ import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 export const Header = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isLoading = useSelector(selectAuthLoading);
 
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -38,7 +39,7 @@ export const Header = () => {
       gap={2}
     >
       <HeaderNav className="navigation">
-        {!isLoggedIn ? (
+        {!isLoggedIn && !isLoading ? (
           <HeaderNavLink to="/">
             <Heading size="md">Home</Heading>
           </HeaderNavLink>
@@ -53,7 +54,7 @@ export const Header = () => {
       <Spacer />
 
       <Flex display={{ base: 'none', md: 'flex' }} alignItems="center" gap={3}>
-        {!isLoggedIn ? <AuthNav /> : <UserMenu />}
+        {!isLoggedIn && !isLoading ? <AuthNav /> : <UserMenu />}
       </Flex>
 
       <Button
@@ -68,7 +69,7 @@ export const Header = () => {
       <Box display={{ md: 'none' }}>
         <MobileMenu>
           <Flex flexDirection="column" gap={3} alignItems="flex-start">
-            {isLoggedIn ? <UserMenu /> : <AuthNav />}
+            {isLoggedIn && !isLoading ? <UserMenu /> : <AuthNav />}
           </Flex>
         </MobileMenu>
       </Box>

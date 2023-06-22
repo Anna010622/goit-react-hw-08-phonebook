@@ -1,9 +1,13 @@
 import { Box, Center, CircularProgress, Container } from '@chakra-ui/react';
 import { Header } from 'components/Header/Header';
 import { Suspense } from 'react';
+import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import { selectAuthLoading } from 'redux/selectors';
 
 export const Layout = () => {
+  const isLoading = useSelector(selectAuthLoading);
+
   return (
     <Container
       maxW={{
@@ -22,7 +26,7 @@ export const Layout = () => {
             </Center>
           }
         >
-          <Outlet />
+          {!isLoading && <Outlet />}
         </Suspense>
       </Box>
     </Container>
