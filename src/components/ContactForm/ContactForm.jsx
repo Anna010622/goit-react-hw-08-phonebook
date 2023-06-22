@@ -82,6 +82,15 @@ export const ContactForm = () => {
         duration: 3000,
       });
     }
+    if (contacts.find(contact => contact.number === number)) {
+      return toast({
+        title: `${number} is already in contacts`,
+        isClosable: true,
+        position: 'top-right',
+        status: 'info',
+        duration: 3000,
+      });
+    }
 
     dispatch(addContact({ name, number }))
       .unwrap()

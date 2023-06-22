@@ -30,13 +30,34 @@ export const EditForm = ({ onCancel, contact }) => {
 
   const onSubmit = data => {
     const { name, number } = data;
+
+    if (contact.name === name && contact.number === number) {
+      return onCancel();
+    }
     if (
       contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
+        contactInList =>
+          contactInList.name.toLowerCase() === name.toLowerCase() &&
+          contactInList.name.toLowerCase() !== contact.name.toLowerCase()
       )
     ) {
       return toast({
         title: `${name} is already in contacts`,
+        isClosable: true,
+        position: 'top-right',
+        status: 'info',
+        duration: 3000,
+      });
+    }
+    if (
+      contacts.find(
+        contactInList =>
+          contactInList.number === number &&
+          contactInList.number !== contact.number
+      )
+    ) {
+      return toast({
+        title: `${number} is already in contacts`,
         isClosable: true,
         position: 'top-right',
         status: 'info',

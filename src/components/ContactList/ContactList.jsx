@@ -30,8 +30,10 @@ export const ContactList = () => {
 
   const getVisibleContacts = () => {
     let normalizedFilter = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact?.name.toLowerCase().includes(normalizedFilter)
+    return contacts.filter(
+      contact =>
+        contact?.name.toLowerCase().includes(normalizedFilter) ||
+        contact?.number.includes(filter)
     );
   };
 

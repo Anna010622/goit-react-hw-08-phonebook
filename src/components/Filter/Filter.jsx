@@ -25,7 +25,7 @@ export const Filter = () => {
       {contacts.length !== 0 && (
         <FormControl mb={6}>
           <FormLabel fontSize="lg" fontWeight="600">
-            Find contacts by name
+            Find contacts by name or phone number
           </FormLabel>
           <Input
             name="filter"
