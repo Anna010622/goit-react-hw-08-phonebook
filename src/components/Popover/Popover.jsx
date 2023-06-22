@@ -10,6 +10,7 @@ const {
   FocusLock,
   PopoverArrow,
   PopoverCloseButton,
+  Portal,
 } = require('@chakra-ui/react');
 
 const { useRef } = require('react');
@@ -26,7 +27,7 @@ export const PopoverForm = ({ contact }) => {
         onOpen={onOpen}
         onClose={onClose}
         closeOnBlur={true}
-        placement="top"
+        // placement="left"
       >
         <PopoverTrigger>
           <IconButton
@@ -39,13 +40,15 @@ export const PopoverForm = ({ contact }) => {
             _focus={{ bg: 'teal.100' }}
           />
         </PopoverTrigger>
-        <PopoverContent>
-          <FocusLock returnFocus persistentFocus={false}>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <EditForm onCancel={onClose} contact={contact} />
-          </FocusLock>
-        </PopoverContent>
+        <Portal>
+          <PopoverContent>
+            <FocusLock returnFocus persistentFocus={false}>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              <EditForm onCancel={onClose} contact={contact} />
+            </FocusLock>
+          </PopoverContent>
+        </Portal>
       </Popover>
     </>
   );

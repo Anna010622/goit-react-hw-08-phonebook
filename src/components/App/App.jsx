@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContactsError } from 'redux/selectors';
 import { lazy, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from 'components/Layout/Layout';
 import { currentUser } from 'redux/auth/authOperations';
 import { PrivateRoute } from 'components/PrivateRoute';
@@ -69,6 +69,7 @@ export const App = () => {
             </PrivateRoute>
           }
         />
+        <Route path="*" element={<Navigate to="/" replace={true} />}></Route>
       </Route>
     </Routes>
   );

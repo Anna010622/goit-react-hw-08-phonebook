@@ -83,7 +83,26 @@ export const ContactForm = () => {
       });
     }
 
-    dispatch(addContact({ name, number }));
+    dispatch(addContact({ name, number }))
+      .unwrap()
+      .then(() => {
+        toast({
+          title: `Contact has been added`,
+          isClosable: true,
+          position: 'top-right',
+          status: 'success',
+          duration: 3000,
+        });
+      })
+      .catch(() =>
+        toast({
+          title: `Something went wrong. Please try again later`,
+          isClosable: true,
+          position: 'top-right',
+          status: 'error',
+          duration: 3000,
+        })
+      );
     reset();
   };
 
