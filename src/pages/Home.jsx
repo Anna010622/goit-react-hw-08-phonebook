@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useColorModeValue } from '@chakra-ui/react';
 
 const {
   Heading,
@@ -7,68 +8,77 @@ const {
   Flex,
   Button,
   Box,
-  useColorModeValue,
   Avatar,
 } = require('@chakra-ui/react');
 
 const Home = () => {
   const navigate = useNavigate();
 
-  const bookBg = useColorModeValue('teal.500', 'red.300');
-  const color = useColorModeValue('white', 'red.300');
+  const color = useColorModeValue('#ffffff', '#ffffff');
+  const gradient = useColorModeValue(
+    'linear(to-b, white, teal.200)',
+    'linear(to-b, #172a46, teal.900)'
+  );
+  const blue = useColorModeValue('cyan.200', 'cyan.800');
+  const green = useColorModeValue('green.200', 'green.700');
+  const red = useColorModeValue('red.200', 'cyan.800');
+  const yellow = useColorModeValue('yellow.200', 'green.700');
   return (
     <Flex
       h="80vh"
-      w={{ base: '100%', md: '90%', lg: '80%' }}
+      w={{ base: '100%', md: '90%', xl: '70%' }}
       justifyContent="center"
       paddingLeft={{ md: '10%', lg: '20%' }}
       pb={6}
     >
       <Box display="flex" h="100%" w="100%">
-        <Box w="90%" h="100%" bg={bookBg} borderRadius="10px" p={6}>
+        <Box
+          w="90%"
+          h="100%"
+          bg={'teal.500'}
+          borderRadius="10px"
+          p={6}
+          backgroundRepeat="no-repeat"
+          backgroundSize="cover"
+          backgroundPosition="center"
+          bgGradient={gradient}
+          boxShadow="rgba(0, 0, 0, 0.3) 3px 3px 4px;"
+        >
           <Center height="100%" flexDirection="column" minH="270px">
             <Avatar bg="transparent" size="2xl" />
             <Heading
-              color={color}
               as="h1"
               mb={10}
-              size={{ base: 'md', sm: '2xl', md: '2xl', lg: '2xl' }}
+              size={{ base: 'md', sm: 'xl', md: 'xl', lg: 'xl' }}
               fontFamily="Seymour One"
             >
               ContactBook
             </Heading>
 
-            <Text
-              mb={2}
-              fontSize={{ base: 'sm', md: 'xl' }}
-              textAlign="center"
-              color={color}
-            >
+            <Text mb={4} fontSize={{ base: 'sm', md: 'xl' }} textAlign="center">
               Please log in to use this application
             </Text>
             <Flex gap={2}>
-              <Button
-                onClick={() => navigate('/login')}
-                colorScheme="white"
-                _hover={{ bg: 'teal.400' }}
-              >
+              <Button onClick={() => navigate('/login')} colorScheme="teal">
                 Login
               </Button>
-              <Button
-                onClick={() => navigate('/register')}
-                colorScheme="white"
-                _hover={{ bg: 'teal.400' }}
-              >
+              <Button onClick={() => navigate('/register')} colorScheme="teal">
                 Register
               </Button>
             </Flex>
           </Center>
         </Box>
-        <Flex w="10%" flexDirection="column" justifyContent="space-evenly">
+
+        <Flex
+          w="7%"
+          flexDirection="column"
+          justifyContent="space-evenly"
+          zIndex={-1}
+        >
           <Center
             h="15%"
             w="100%"
-            bg="cyan.200"
+            bg={blue}
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
@@ -79,7 +89,7 @@ const Home = () => {
           <Center
             h="15%"
             w="100%"
-            bg="green.200"
+            bg={green}
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
@@ -90,7 +100,7 @@ const Home = () => {
           <Center
             h="15%"
             w="100%"
-            bg="red.200"
+            bg={red}
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
@@ -101,7 +111,7 @@ const Home = () => {
           <Center
             h="15%"
             w="100%"
-            bg="yellow.200"
+            bg={yellow}
             borderTopRightRadius="5px"
             borderBottomRightRadius="5px"
           >
